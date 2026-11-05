@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build files
+**/dist/
+**/.next/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
