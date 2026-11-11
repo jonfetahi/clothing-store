@@ -4,6 +4,7 @@ import { HorizontalMenu } from '../../shared/components/HorizontalMenu';
 import { useNavigation, usePageTitle } from '../../context/navigation-context';
 import { FiChevronRight, FiHome } from 'react-icons/fi';
 import { Footer } from '../../shared/components/Footer';
+import { PublicDataProvider } from '../../context/public-context';
 
 function NavigationRouter({ routes }) {
   const indexRoute = routes.find((it) => it.index) || routes?.[0];
@@ -64,7 +65,9 @@ function NavigationRouter({ routes }) {
 
 function Public() {
   return (
-   <NavigationRouter routes={AllRoutes.filter((it) => it.component)}/>
+    <PublicDataProvider>
+      <NavigationRouter routes={AllRoutes.filter((it) => it.component)}/>
+    </PublicDataProvider>
   )
 }
 

@@ -8,15 +8,17 @@ import { useBreadcrumbs } from '../../../context/navigation-context';
 import Button from '../../../shared/ui/Button';
 import NumberEditor from '../../../shared/ui/NumberEditor';
 import FormField from '../../../shared/ui/FormField';
+import { AppLoader } from '../../../shared/components/AppLoader';
+import { useNotify } from '../../../hooks/use-notify';
 
 
 export function ProductDetails() {
   const { id } = useParams<{ id: string }>();
   useBreadcrumbs('Mens', 1)
-  const {
-    data,
-    loading,
-    } = useServices(Services.Products.get, !!id, { id });
+  const { showSuccess } = useNotify()
+
+  const { loading: loadingProduct, data } = useServices(Services.Products.get, !!id, { id });
+  const { loading: loadingFavourites, requestAsync } = useServices(Services.Favourites.add, false);
 
   const product = data as Product | null;
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -34,9 +36,6 @@ export function ProductDetails() {
       return acc;
     }, []);
   }, [product]);
-
-  console.log(product?.variants);
-
 
   const selectedVariant = variants.find(
     (it) => it.id === selectedVariantId
@@ -59,10 +58,26 @@ export function ProductDetails() {
     });
   };
 
+  const onAddToFavourites = (product_id: string | undefined) => {
+    const payload = {
+      product_id
+    }
+    requestAsync({ payload }).then(({ data }) => {
+      if (data) {
+       showSuccess({
+         message: data.message ?? "Item added to Favourites" ,
+         duration: 3000
+       });
+      }
+    })
+  }
+
+  const loading = loadingProduct || loadingFavourites;
+
   return (
-    <div className="mx-auto w-full py-10">
+    <div className="mx-auto w-full py-1">
       <div className="grid grid-cols-10">
-        {loading && (<div>Loading...</div>)}
+        {loading && <AppLoader/>}
         <div className='col-start-1 col-end-2'>
           {images.length > 0 && (
             <div className="flex justify-center gap-3 overflow-x-auto">
@@ -118,11 +133,11 @@ export function ProductDetails() {
             <div>{product?.category.name}</div>
           </div>
 
-          <p className="mt-5 text-2xl font-semibold text-gray-900">
+          <p className="mt-2 text-2xl font-semibold text-gray-900">
             ${Number(product?.price).toFixed(2)}
           </p>
 
-          <p className="mt-6 text-sm leading-7 text-gray-500">
+          <p className="mt-2 text-sm leading-7 text-gray-500">
             {product?.description}
           </p>
 
@@ -141,7 +156,7 @@ export function ProductDetails() {
             ))}
             </FormField>
           </div>
-          <div className="mb-7">
+          <div className="mb-2">
             <FormField label={'Select Size'} error={false}>
               <div className="flex flex-wrap gap-3">
                 {sizes.map((variant) => (
@@ -188,12 +203,12 @@ export function ProductDetails() {
               Add to Cart
             </Button>
 
-            <button
-              aria-label="Add to wishlist"
+            <Button
+              onClick={() => onAddToFavourites(product?.id)}
               className="rounded-lg border border-gray-200 px-5 hover:border-gray-400"
             >
               <FiHeart size={19} />
-            </button>
+            </Button>
           </div>
 
           <div className="mt-7 flex items-center gap-3 text-sm text-gray-500">

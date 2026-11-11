@@ -5,14 +5,31 @@ export const createLookupController = (table: string) => {
     const service = new LookupService(table);
 
     return {
-        getAll: async (_req: Request, res: Response) => {
+        getAll: async (req: Request, res: Response) => {
             try {
-                const data = await service.getAll();
+                const gender =
+                  typeof req.query.gender === "string"
+                    ? req.query.gender
+                    : undefined;
+
+                const search =
+                  typeof req.query.search === "string"
+                    ? req.query.search
+                    : undefined;
+
+                const data = await service.getAll({
+                    gender,
+                    search
+                });
                 res.status(200).json(data);
             } catch (error) {
-                res.status(500).json({ message: "Internal server error" });
+                console.error(error);
+                res.status(500).json({
+                    message: "Internal server error"
+                });
             }
         },
+
 
         getById: async (req: Request, res: Response) => {
             try {

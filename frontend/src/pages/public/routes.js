@@ -1,6 +1,7 @@
 import { Home } from './home';
 import { ProductDetails } from './product/ProductDetails';
 import { Login } from './login/Login';
+import { Register } from './register/Register';
 
 export const AllRoutes = [
   {
@@ -32,6 +33,12 @@ export const AllRoutes = [
     path: 'login',
     title: 'Login',
     component: Login,
+    menu: false
+  },
+  {
+    path: 'register',
+    title: 'Register',
+    component: Register,
     menu: false
   }
 ];

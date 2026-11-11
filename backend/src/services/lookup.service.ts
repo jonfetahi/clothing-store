@@ -5,15 +5,52 @@ import { CUSTOM_QUERIES } from "../config/queries/custom.queries";
 export class LookupService {
     constructor(private table: string) {}
 
-    async getAll(): Promise<Lookup[]> {
-        const query =
-            CUSTOM_QUERIES[this.table]?.getAll ??
-            `SELECT * FROM ${this.table} ORDER BY name`;
 
-        const result = await pool.query(query);
+    async getAll(filters?: {
+        gender?: string;
+        search?: string;
+    }): Promise<Lookup[]> {
+
+        let query =
+          CUSTOM_QUERIES[this.table]?.getAll ??
+          `SELECT * FROM ${this.table} ORDER BY name`;
+
+        const params: string[] = [];
+
+        if (this.table === "products") {
+            const conditions: string[] = [];
+
+            if (filters?.gender?.trim()) {
+                params.push(filters.gender.trim());
+
+                conditions.push(
+                  `LOWER(p.gender->>'name') = LOWER($${params.length})`
+                );
+            }
+
+            if (filters?.search?.trim()) {
+                params.push(`%${filters.search.trim()}%`);
+
+                conditions.push(
+                  `p.name ILIKE $${params.length}`
+                );
+            }
+
+            if (conditions.length > 0) {
+                query = `
+                SELECT * FROM (
+                    ${query}
+                ) AS p
+                WHERE ${conditions.join(" AND ")}
+            `;
+            }
+        }
+
+        const result = await pool.query(query, params);
 
         return result.rows;
     }
+
 
     async getById(id: string): Promise<Lookup | null> {
         const query =

@@ -39,7 +39,7 @@ function TextInput(props: TextInputProps) {
     autoFocus = false,
     isTypePassword = false,
   } = props;
-
+  console.log('isTypePassword',isTypePassword);
   const baseInputClasses = classNames(
     'min-w-0 flex-1 bg-transparent outline-none',
     'text-sm text-gray-800 placeholder:text-gray-400',

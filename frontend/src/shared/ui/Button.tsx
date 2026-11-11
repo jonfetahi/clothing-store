@@ -33,7 +33,7 @@ const Button: FC<ButtonProps> = (props: ButtonProps) => {
     'text-white rounded inline-flex flex-nowrap items-center justify-center leading-4',
     small ? 'py-1 px-2 text-sm' : 'py-2 px-4',
     {
-      'bg-black hover:bg-gray-700':
+      'bg-black text-white hover:bg-gray-700':
         !disabled && !outline && !active && type === 'primary',
       'bg-gray-200': disabled && !outline && !active && type === 'primary',
       'bg-blue-100 text-blue-500 hover:bg-blue-400 hover:text-white':

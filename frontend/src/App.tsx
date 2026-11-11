@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { AppLoader } from './shared/components/AppLoader';
 
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<AppLoader/>}>
         <ToastContainer />
         <Routes>
           <Route path="/admin" element={<Admin />} />
