@@ -1,28 +1,36 @@
 import { HttpMethodEnum, ServiceDefinition } from "../types";
+import ApiService from '../ApiService';
 
-const baseUrl = (path = '') => `http://localhost:5000/api` + path;
+const baseUrl = (path = '') => ApiService.coreUrl('/products' + path);
 
 export const Products: ServiceDefinition = {
   list: () => ({
-    url: baseUrl('/products'),
+    url: baseUrl(''),
     method: HttpMethodEnum.GET,
   }),
   get: ({ id }) => ({
-    url: baseUrl(`/products/${id}`),
+    url: baseUrl(`/${id}`),
     method: HttpMethodEnum.GET,
   }),
   create: ({ payload }) => ({
-    url: baseUrl('/products'),
+    url: baseUrl(''),
     method: HttpMethodEnum.POST,
     payload
   }),
   update: ({ id, payload }) => ({
-    url: baseUrl(`/products/${id}`),
+    url: baseUrl(`/${id}`),
     method: HttpMethodEnum.PUT,
     payload
   }),
   delete: ({ id }) => ({
-    url: baseUrl(`/products/${id}`),
+    url: baseUrl(`/${id}`),
     method: HttpMethodEnum.DELETE
+  }),
+  search: ({ search }) =>({
+    url: baseUrl(``),
+    method: HttpMethodEnum.GET,
+    params: {
+      search
+    }
   })
 }

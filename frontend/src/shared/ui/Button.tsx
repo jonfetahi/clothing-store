@@ -30,36 +30,38 @@ const Button: FC<ButtonProps> = (props: ButtonProps) => {
   } = props;
 
   const btnClass = classNames(
-    'text-white rounded inline-flex flex-nowrap items-center justify-center leading-4',
+    'text-black rounded inline-flex flex-nowrap items-center justify-center leading-4 transition-colors',
     small ? 'py-1 px-2 text-sm' : 'py-2 px-4',
     {
-      'bg-black text-white hover:bg-gray-700':
+      // --- PRIMARY ---
+      'bg-primary text-white hover:bg-opacity-90':
         !disabled && !outline && !active && type === 'primary',
-      'bg-gray-200': disabled && !outline && !active && type === 'primary',
-      'bg-blue-100 text-blue-500 hover:bg-blue-400 hover:text-white':
+      'bg-gray-200 text-gray-400 cursor-not-allowed':
+        disabled && !outline && !active && type === 'primary',
+
+      // --- SECONDARY ---
+      'bg-secondary text-white hover:bg-gray-800':
         !disabled && !outline && !active && type === 'secondary',
-      'bg-blue-50 text-blue-300':
+      'bg-gray-300 text-gray-400 cursor-not-allowed hover:bg-gray-200':
         disabled && !outline && !active && type === 'secondary',
-      'bg-red-400 hover:bg-red-600':
+
+      // --- WARNING ---
+      'bg-red-600 hover:bg-red-500 text-white':
         !disabled && !outline && !active && type === 'warning',
-      'bg-red-200': disabled && !outline && !active && type === 'warning',
-      'border bg-white text-black hover:bg-gray-100 border-gray-200 hover:border-gray-300 text-gray-800 hover:text-blue-500':
-        !type,
-      'border border-gray-500 hover:border-gray-400':
+      'bg-red-200 text-red-400':
+        disabled && !outline && !active && type === 'warning',
+
+      // --- DEFAULT (No Type / Undefined) ---
+      'border bg-white text-gray-800 border-gray-300 hover:bg-gray-50 hover:border-gray-400':
+        !type && !disabled,
+      'border bg-gray-100 border-gray-200 cursor-not-allowed':
+        !type && disabled,
+
+      // --- OUTLINE VARIANTS ---
+      'border border-gray-500 hover:border-gray-400 text-gray-700':
         !disabled && outline && !active && type === 'primary',
-      'border border-blue-200':
-        disabled && outline && !active && type === 'primary',
-      'border border-blue-400 bg-blue-100 text-blue-500 hover:bg-blue-400 hover:text-white':
-        !disabled && outline && !active && type === 'secondary',
-      'border border-blue-400 bg-blue-400':
-        !disabled && outline && active && type === 'secondary',
-      'border border-blue-200 bg-blue-50 text-blue-300':
-        disabled && outline && !active && type === 'secondary',
-      'border border-red-400 hover:border-red-600':
-        !disabled && outline && !active && type === 'warning',
-      'border border-red-400':
-        disabled && outline && !active && type === 'warning',
-      'bg-transparent text-gray-500': outline && !active,
+      'border border-gray-300 text-gray-500 bg-transparent':
+        outline && !active && !type,
     },
     className
   );

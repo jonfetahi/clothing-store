@@ -1,20 +1,30 @@
 import { HttpMethodEnum, ServiceDefinition } from "../types";
+import ApiService from '../ApiService';
 
-const baseUrl = (path = '') => `http://localhost:5000/api` + path;
+const baseUrl = (path = '') => ApiService.coreUrl('/auth' + path);
 
 export const Auth: ServiceDefinition = {
   register: ({ payload }) => ({
-    url: baseUrl('/auth/register'),
+    url: baseUrl('/register'),
     method: HttpMethodEnum.POST,
     payload: payload,
   }),
   login: ({ payload }) => ({
-    url: baseUrl('/auth/login'),
+    url: baseUrl('/login'),
+    method: HttpMethodEnum.POST,
+    payload: payload,
+  }),
+  logout: ({ payload }) => ({
+    url: baseUrl('/logout'),
     method: HttpMethodEnum.POST,
     payload: payload,
   }),
   me: () => ({
-    url: baseUrl('/auth/me'),
+    url: baseUrl('/me'),
     method: HttpMethodEnum.GET,
+  }),
+  refresh: () => ({
+    url: baseUrl('/refresh'),
+    method: HttpMethodEnum.POST,
   })
 }

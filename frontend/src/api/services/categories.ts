@@ -11,13 +11,18 @@ export const Categories: ServiceDefinition = {
     url: baseUrl(`/categories/${id}`),
     method: HttpMethodEnum.GET,
   }),
-  testPost: ({ payload }) => ({
-    url: baseUrl('/post'),
+  create: ({ payload }) => ({
+    url: baseUrl('/categories'),
     method: HttpMethodEnum.POST,
     payload
   }),
-  posts: () => ({
-    url: baseUrl('/todos/1'),
-    method: HttpMethodEnum.GET
+  update: ({ payload, id }) => ({
+    url: baseUrl(`/categories/${id}`),
+    method: HttpMethodEnum.PUT,
+    payload
+  }),
+  delete: ({ id }) => ({
+    url: baseUrl(`/categories/${id}`),
+    method: HttpMethodEnum.DELETE,
   })
 }

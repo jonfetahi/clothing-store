@@ -8,10 +8,10 @@ import { PublicDataProvider } from '../../context/public-context';
 
 function NavigationRouter({ routes }) {
   const indexRoute = routes.find((it) => it.index) || routes?.[0];
-  usePageTitle('Clothify')
+  usePageTitle('ClothesStore')
   const { breadcrumbs } = useNavigation();
   return (
-    <div>
+    <div className='bg-background'>
       <HorizontalMenu routes={routes.filter((it) => it.menu)} />
       <div className='px-10 py-5'>
         <div className="flex flex-row gap-2"> {breadcrumbs.map((it, i) => {

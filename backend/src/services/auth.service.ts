@@ -24,7 +24,7 @@ const PUBLIC_USER_FIELDS = `
 `;
 
 export class AuthService {
-  private generateToken(userId: string): string {
+  generateToken(userId: string): string {
     const secret = process.env.JWT_SECRET;
 
     if (!secret) {

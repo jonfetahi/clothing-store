@@ -41,7 +41,7 @@ export function Home() {
 
 
   const onGoToProduct = (id: string) => {
-    navigate(`${location.pathname}/product/${id}`);
+    navigate(`${location.pathname}/products/${id}`);
   }
 
   return (

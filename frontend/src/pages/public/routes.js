@@ -24,7 +24,7 @@ export const AllRoutes = [
     menu: true
   },
   {
-    path: 'product/:id',
+    path: 'products/:id',
     title: 'Product',
     component: ProductDetails,
     menu: false

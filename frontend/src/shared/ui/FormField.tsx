@@ -27,7 +27,7 @@ function FormField(props: Props) {
   return (
     <div
       className={classNames(
-        'mb-3',
+        'mb-2',
         { 'grid grid-cols-4': horizontal },
         className
       )}

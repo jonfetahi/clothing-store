@@ -14,7 +14,7 @@ function App() {
       <Suspense fallback={<AppLoader/>}>
         <ToastContainer />
         <Routes>
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/*" element={<Admin />} />
           <Route path="/public/*" element={<Public />} />
           <Route path="/" element={<Navigate to="/public" replace />} />
         </Routes>

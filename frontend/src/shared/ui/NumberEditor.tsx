@@ -101,7 +101,7 @@ function NumberEditor({
   return (
     <div
       className={classNames(
-        'inline-flex h-10 items-center rounded-lg border border-gray-300 bg-white shadow-sm overflow-hidden',
+        'inline-flex h-11 items-center rounded-lg border border-gray-300 bg-white shadow-sm overflow-hidden',
         disabled && 'bg-gray-50 opacity-60',
         className
       )}

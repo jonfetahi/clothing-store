@@ -10,6 +10,7 @@ import { AppLoader } from '../../../shared/components/AppLoader';
 import useForm from '../../../hooks/use-form';
 import { useNotify } from '../../../hooks/use-notify';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { useAuth } from '../../../context/auth-context';
 
 export function Login() {
   useBreadcrumbs('Login', 1)
@@ -17,26 +18,26 @@ export function Login() {
   const location = useLocation();
   const { showSuccess } = useNotify()
   const [showPassword, setShowPassword] = useState(true);
-
+  const { loading, login } = useAuth();
   const { fields, values } = useForm({
     email: "",
     password: "",
   });
-
-  const { loading, requestAsync } = useServices(Services.Auth.login, false);
 
   const onGoToRegister = () => {
     navigate(`${location.pathname.slice(0, 7)}/register`);
   }
 
   const onLogin = () => {
-    const payload = {
-      ...values
-    }
-    requestAsync({ payload }).then((data) => {
+    login(values.email, values.password).then((data) => {
       if (data) {
-        showSuccess();
-        navigate(`/admin`);
+        showSuccess("Successfully logged in");
+        navigate(
+          data.role === "Simple User"
+            ? "/public"
+            : "/admin",
+          { replace: true }
+        );
       }
     })
   }

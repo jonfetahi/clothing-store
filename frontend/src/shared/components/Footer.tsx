@@ -12,8 +12,6 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-14">
 
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
-
-          {/* Brand */}
           <div className="lg:col-span-1">
             <h2 className="text-2xl font-bold tracking-tight text-gray-900">
               CLOTHING<span className="font-light">STORE.</span>

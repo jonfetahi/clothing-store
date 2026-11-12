@@ -1,12 +1,13 @@
 import { HttpMethodEnum, ServiceDefinition } from "../types";
+import ApiService from '../ApiService';
 
-const baseUrl = (path = '') => `http://localhost:5000/api` + path;
+const baseUrl = (path = '') => ApiService.coreUrl('/image' + path);
 
 export const Images: ServiceDefinition = {
-
-  posts: () => ({
-    url: baseUrl('/todos/1'),
-    method: HttpMethodEnum.GET
+  upload: ({ payload }) => ({
+    url: baseUrl('/upload'),
+    method: HttpMethodEnum.POST,
+    payload
   }),
 }
 

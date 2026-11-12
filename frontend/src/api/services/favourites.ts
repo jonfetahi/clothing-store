@@ -1,28 +1,29 @@
 import { HttpMethodEnum, ServiceDefinition } from '../types';
+import ApiService from '../ApiService';
 
-const baseUrl = (path = '') => `http://localhost:5000/api` + path;
+const baseUrl = (path = '') => ApiService.coreUrl('/favourites' + path);
 
 export const Favourites: ServiceDefinition = {
   list:() => ({
-    url: baseUrl('/favourites'),
+    url: baseUrl(''),
     method: HttpMethodEnum.GET
   }),
   get:({ id }) => ({
-    url: baseUrl(`/favourites/${id}`),
+    url: baseUrl(`/${id}`),
     method: HttpMethodEnum.GET
   }),
   add:({ payload }) => ({
-    url: baseUrl(`/favourites`),
+    url: baseUrl(``),
     method: HttpMethodEnum.POST,
     payload,
   }),
   update:({ payload, id }) => ({
-    url: baseUrl(`/favourites/${id}`),
+    url: baseUrl(`/${id}`),
     method: HttpMethodEnum.PUT,
     payload,
   }),
   delete: ({ id }) => ({
-    url: baseUrl(`/favourites/${id}`),
+    url: baseUrl(`/${id}`),
     method: HttpMethodEnum.DELETE,
   })
 }
