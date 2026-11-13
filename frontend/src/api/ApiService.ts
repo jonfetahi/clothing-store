@@ -1,4 +1,4 @@
-import { BaseUrlKind } from './services/constant';
+import { BaseUrlKind } from './constant';
 
 class ApiServiceClass {
   private _coreUrl: string;

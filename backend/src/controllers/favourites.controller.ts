@@ -9,7 +9,6 @@ export const FavouritesController = {
   getAll: async (req: Request, res: Response) => {
     try {
       const userId = (req as AuthRequest).user!.id;
-      console.log(userId);
       const data = await service.getAll(userId);
 
       res.status(200).json(data);

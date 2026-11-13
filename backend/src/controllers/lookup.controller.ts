@@ -1,51 +1,37 @@
 import { Request, Response } from "express";
 import { LookupService } from "../services/lookup.service";
+import { AuthRequest } from '../types/auth.types';
 
 export const createLookupController = (table: string) => {
     const service = new LookupService(table);
 
     return {
-        getAll: async (req: Request, res: Response) => {
-            try {
-                const gender =
-                  typeof req.query.gender === "string"
-                    ? req.query.gender
-                    : undefined;
+        async getAll(req: Request, res: Response) {
+            const filters = {
+                gender: req.query.gender as string,
+                search: req.query.search as string,
+            };
 
-                const search =
-                  typeof req.query.search === "string"
-                    ? req.query.search
-                    : undefined;
+            const userId = (req as AuthRequest).user?.id ?? null;
+            const results = await service.getAll(filters, userId);
+            res.json(results);
+        },
+        async getById(req: Request, res: Response) {
+            const userId = (req as AuthRequest).user?.id ?? null;
 
-                const data = await service.getAll({
-                    gender,
-                    search
-                });
-                res.status(200).json(data);
-            } catch (error) {
-                console.error(error);
-                res.status(500).json({
-                    message: "Internal server error"
+            const result = await service.getById(
+              req.params.id as string,
+              userId
+            );
+
+            if (!result) {
+                return res.status(404).json({
+                    message: "Record not found",
                 });
             }
+
+            res.json(result);
         },
-
-
-        getById: async (req: Request, res: Response) => {
-            try {
-                const item = await service.getById(String(req.params.id));
-
-                if (!item) {
-                    res.status(404).json({ message: "Not found" });
-                    return;
-                }
-
-                res.status(200).json(item);
-            } catch (error) {
-                res.status(500).json({ message: "Internal server error" });
-            }
-        },
-
         create: async (req: Request, res: Response) => {
             try {
                 const name = req.body?.name;

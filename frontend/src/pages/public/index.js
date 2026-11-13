@@ -8,7 +8,7 @@ import { PublicDataProvider } from '../../context/public-context';
 
 function NavigationRouter({ routes }) {
   const indexRoute = routes.find((it) => it.index) || routes?.[0];
-  usePageTitle('ClothesStore')
+  usePageTitle('ClothingStore')
   const { breadcrumbs } = useNavigation();
   return (
     <div className='bg-background'>

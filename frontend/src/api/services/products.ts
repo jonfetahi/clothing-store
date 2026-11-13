@@ -32,5 +32,12 @@ export const Products: ServiceDefinition = {
     params: {
       search
     }
+  }),
+  getByGender: ({ gender }) =>({
+    url: baseUrl(``),
+    method: HttpMethodEnum.GET,
+    params: {
+      gender
+    }
   })
 }

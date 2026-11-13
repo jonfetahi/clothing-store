@@ -24,7 +24,7 @@ function parseNumber(
 
 type Props = {
   value: number | null;
-  onChange(event: React.MouseEvent<HTMLInputElement>): void;
+  onChange:(v: any) => void;
   min?: number | null;
   max?: number | null;
   disabled?: boolean;

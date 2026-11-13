@@ -16,7 +16,8 @@ type Props = {
 export function Favourites({ onHide }: Props) {
   const navigate = useNavigate();
 
-  const { loading, data } = useServices(Services.Favourites.list, true);
+  const { loading, data, request: onReload } = useServices(Services.Favourites.list, true);
+  const { request } = useServices(Services.Favourites.delete, false);
 
   const favouriteResults: Favourite[] = useMemo(() => {
     return data ?? [];
@@ -27,10 +28,19 @@ export function Favourites({ onHide }: Props) {
     navigate(`/public/products/${id}`);
   };
 
+  const onRemove = (id: string) => {
+    request({ id });
+    onReload();
+  }
+
+  console.log(data);
+
   return (
     <Modal
       title="My Favourites"
       onHide={onHide}
+      height={'fixed'}
+      className='absolute !h-full !right-1 !top-2 !bottom-2 !w-1/3 !translate-y-0 !transform !transition-transform !duration-800 !ease-out'
       footer={
         <div className="flex items-center justify-between w-full">
           <span className="text-xs text-gray-400">
@@ -41,7 +51,7 @@ export function Favourites({ onHide }: Props) {
           <Button
             type='primary'
             onClick={onHide}
-            className="px-5 py-2.5 text-sm font-medium rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
+            className="px-5 py-2.5 text-sm font-medium"
           >
             Continue Shopping
           </Button>
@@ -134,7 +144,7 @@ export function Favourites({ onHide }: Props) {
 
                     <Button
                       type="warning"
-                      onClick={() => {}}
+                      onClick={() => onRemove(it.product_id)}
                       className="inline-flex items-center gap-1.5 text-xs font-medium transition-colors"
                     >
                       <FiTrash2 className="w-3.5 h-3.5" />

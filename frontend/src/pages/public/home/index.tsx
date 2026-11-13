@@ -1,6 +1,6 @@
 import useServices from '../../../hooks/use-service';
 import { Services } from '../../../api/services';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ProductCard } from '../../../shared/components/ProductCard';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Product } from '../product/types';
@@ -14,7 +14,20 @@ export function Home() {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  console.log(location.pathname);
 
+  const gender = useMemo(() => {
+    if (location.pathname.includes('women')) {
+      return location.pathname.split('/')[2];
+    } else if (location.pathname.includes('men')) {
+      return location.pathname.split('/')[2];
+    } else {
+      return '';
+    }
+  }, [location.pathname]);
+
+
+  console.log(gender);
 
   const {
     loading: loadingCategories,
@@ -23,13 +36,23 @@ export function Home() {
 
   const {
     loading: loadingProducts,
-    data: products,
-  } = useServices(Services.Products.list, true);
+    requestAsync
+  } = useServices(Services.Products.getByGender, false,  { gender });
+
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    requestAsync().then((res) => {
+      setProducts(res);
+    })
+  }, [gender])
 
   const loading = loadingCategories || loadingProducts;
-
   const categoryList: Category[] = categories ?? [];
-  const productList: Product[] = products ?? [];
+  const productList: Product[] = useMemo(() => {
+    return products ?? [];
+  }, [products])
+
 
   const filteredProducts = useMemo(() => {
     if (!selectedCategory) return productList;
@@ -41,7 +64,7 @@ export function Home() {
 
 
   const onGoToProduct = (id: string) => {
-    navigate(`${location.pathname}/products/${id}`);
+    navigate(`${location.pathname.slice(0,7)}/products/${id}`);
   }
 
   return (

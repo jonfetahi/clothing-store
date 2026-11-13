@@ -18,6 +18,7 @@ export type Product = {
   category: { id: string; name: string };
   brand: { id: string; name: string };
   gender: { id: string; name: string };
+  is_favourite: boolean;
   images: ProductImage[];
   variants: ProductVariant[];
 };

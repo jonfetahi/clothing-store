@@ -6,18 +6,24 @@ export class LookupService {
     constructor(private table: string) {}
 
 
-    async getAll(filters?: {
-        gender?: string;
-        search?: string;
-    }): Promise<Lookup[]> {
+    async getAll(
+      filters?: {
+          gender?: string;
+          search?: string;
+      },
+      userId: string | null = null
+    ): Promise<Lookup[]> {
 
         let query =
           CUSTOM_QUERIES[this.table]?.getAll ??
           `SELECT * FROM ${this.table} ORDER BY name`;
 
-        const params: string[] = [];
+        const params: (string | null)[] = [];
 
         if (this.table === "products") {
+            // $1 is reserved for the authenticated user ID
+            params.push(userId);
+
             const conditions: string[] = [];
 
             if (filters?.gender?.trim()) {
@@ -38,29 +44,35 @@ export class LookupService {
 
             if (conditions.length > 0) {
                 query = `
-                SELECT * FROM (
-                    ${query}
-                ) AS p
-                WHERE ${conditions.join(" AND ")}
-            `;
+                    SELECT * FROM (
+                                      ${query}
+                                      ) AS p
+                    WHERE ${conditions.join(" AND ")}
+                `;
             }
         }
-
         const result = await pool.query(query, params);
-
         return result.rows;
     }
 
+    async getById(
+      id: string,
+      userId: string | null = null
+    ): Promise<Lookup | null> {
 
-    async getById(id: string): Promise<Lookup | null> {
         const query =
-            CUSTOM_QUERIES[this.table]?.getById ??
-            `SELECT * FROM ${this.table} WHERE id = $1`;
+          CUSTOM_QUERIES[this.table]?.getById ??
+          `SELECT * FROM ${this.table} WHERE id = $1`;
 
-        const result = await pool.query(query, [id]);
+        const params =
+          this.table === "products"
+            ? [id, userId]
+            : [id];
 
+        const result = await pool.query(query, params);
         return result.rows[0] ?? null;
     }
+
 
     async create(name: string): Promise<Lookup> {
         const result = await pool.query<Lookup>(
