@@ -1,14 +1,11 @@
 import { Router } from "express";
 import { UsersController } from "../controllers/users.controller";
-import {
-  authenticate,
-  authorize
-} from "../middleware/auth.middleware";
+
 
 const router = Router();
 
-router.use(authenticate);
-router.use(authorize("Admin"));
+// router.use(authenticate);
+// router.use(authorize("Admin"));
 
 router.get("/", UsersController.getAll);
 router.get("/:id", UsersController.getById);

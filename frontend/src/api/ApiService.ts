@@ -7,8 +7,8 @@ class ApiServiceClass {
   constructor() {
     const baseUrl = process.env.REACT_APP_API_URL || '';
     const apiVersion = process.env.REACT_APP_API_VERSION || '';
-    const cloudinaryUrl = process.env.CLOUDINARY_URL || '';
-    const cloudinaryFileLocation = process.env.CLOUDINARY_FILE_LOCATION || '';
+    const cloudinaryUrl = process.env.REACT_APP_CLOUDINARY_URL || '';
+    const cloudinaryFileLocation = process.env.REACT_APP_CLOUDINARY_FILE_LOCATION || '';
 
     this._coreUrl = `${baseUrl}/${apiVersion}`;
     this._cloudinaryUrl = `${cloudinaryUrl}/${cloudinaryFileLocation}`;

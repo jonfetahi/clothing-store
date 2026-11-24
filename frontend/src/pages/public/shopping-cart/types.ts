@@ -8,6 +8,7 @@ export type ShoppingCartItem = {
   quantity: number,
   size: string,
   color: string,
+  line_total:string,
 }
 
 

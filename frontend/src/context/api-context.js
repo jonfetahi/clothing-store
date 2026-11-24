@@ -63,6 +63,15 @@ function useProvideApi() {
     client.interceptors.request.use(
       (config) => {
         const token = getAccessToken();
+        const isCloudinary = config.url?.startsWith(
+          "https://api.cloudinary.com/"
+        );
+
+        if (isCloudinary) {
+          config.headers.delete("Authorization");
+          config.withCredentials = false;
+          return config;
+        }
 
         if (token) {
           config.headers.set(

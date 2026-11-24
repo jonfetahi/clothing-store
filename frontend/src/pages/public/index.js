@@ -1,17 +1,20 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { AllRoutes } from "./routes";
 import { HorizontalMenu } from '../../shared/components/HorizontalMenu';
-import { useNavigation, usePageTitle } from '../../context/navigation-context';
+import { useBreadcrumbs, useNavigation, usePageTitle } from '../../context/navigation-context';
 import { FiChevronRight, FiHome } from 'react-icons/fi';
 import { Footer } from '../../shared/components/Footer';
 import { PublicDataProvider } from '../../context/public-context';
+import { useAllRoutes  } from './routes';
 
 function NavigationRouter({ routes }) {
   const indexRoute = routes.find((it) => it.index) || routes?.[0];
   usePageTitle('ClothingStore')
+  useBreadcrumbs('Public', 1)
   const { breadcrumbs } = useNavigation();
+
+
   return (
-    <div className='bg-background'>
+    <div className='bg-white'>
       <HorizontalMenu routes={routes.filter((it) => it.menu)} />
       <div className='px-10 py-5'>
         <div className="flex flex-row gap-2"> {breadcrumbs.map((it, i) => {
@@ -30,7 +33,7 @@ function NavigationRouter({ routes }) {
                 aria-current={isLast ? 'page' : undefined}
                 className={`flex items-center gap-1.5 text-base transition-colors ${
                   isLast
-                    ? 'font-semibold text-gray-900'
+                    ? 'font-semibold text-primary'
                     : 'font-medium text-gray-400'
                 }`}
               >
@@ -64,9 +67,10 @@ function NavigationRouter({ routes }) {
 }
 
 function Public() {
+  const publicRoutes = useAllRoutes ();
   return (
     <PublicDataProvider>
-      <NavigationRouter routes={AllRoutes.filter((it) => it.component)}/>
+      <NavigationRouter routes={publicRoutes.filter((it) => it.component)}/>
     </PublicDataProvider>
   )
 }

@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import classNames from 'classnames';
 
@@ -8,53 +9,54 @@ type StepperProps = {
 
 const Stepper = ({ steps, activeStep }: StepperProps) => {
   return (
-    <div className="py-2 mx-auto w-4/5">
-      <div className="flex justify-between items-center">
+    <div className="w-full flex justify-center py-3">
+      <div className="flex items-center w-4/5">
         {steps.map((step, index) => {
           const isCompleted = index < activeStep;
           const isActive = index === activeStep;
-          const isUpcoming = index > activeStep;
+          const isLast = index === steps.length - 1;
 
-          const circleBase =
-            'flex items-center justify-center w-6 h-6 rounded-full z-10 flex-shrink-0';
-          const circle = classNames(circleBase, {
-            'bg-green-600 text-white': isCompleted,
-            'border-2 border-blue-600 text-blue-600': isActive,
-            'bg-blue-100 text-blue-300': isUpcoming,
-          });
+          const circleClass = classNames(
+            'flex items-center justify-center w-7 h-7 rounded-full text-xs font-semibold shrink-0 transition-colors',
+            {
+              'bg-neutral-900 text-white': isCompleted || isActive,
+              'bg-neutral-100 text-neutral-600 border border-neutral-200':
+                !isCompleted && !isActive,
+            }
+          );
 
-          const line = classNames('flex-1 h-0.5', {
-            'bg-green-600': isCompleted,
-            'bg-blue-400': isActive,
-            'bg-blue-100': isUpcoming,
-          });
+          const labelClass = classNames(
+            'text-sm text-wrap transition-colors max-w-10',
+            {
+              'font-semibold text-neutral-900': isActive,
+              'font-medium text-neutral-800': isCompleted,
+              'font-medium text-neutral-600': !isCompleted && !isActive,
+            }
+          );
+
+          const connectorClass = classNames(
+            'flex-1 h-[2px] mx-6 transition-colors',
+            {
+              'bg-neutral-800': isCompleted,
+              'bg-neutral-200': !isCompleted,
+            }
+          );
 
           return (
-            <div
-              key={index}
-              className="relative flex flex-col items-center flex-1 min-w-[75px]"
-            >
-              {index !== 0 && (
-                <div className="absolute -left-1/2 top-3 w-full">
-                  <div className={line} />
+            <Fragment key={index}>
+              <div className="flex items-center gap-2.5 shrink-0">
+                <div className={circleClass}>
+                  {isCompleted ? (
+                    <FaCheck size={11} />
+                  ) : (
+                    <span>{index + 1}</span>
+                  )}
                 </div>
-              )}
-
-              <div className={circle}>
-                {isCompleted ? (
-                  <FaCheck size={12} />
-                ) : isActive ? (
-                  <div className="w-3 h-3 bg-blue-600 rounded-full" />
-                ) : (
-                  <div className="w-3 h-3" />
-                )}
+                <span className={labelClass}>{step}</span>
               </div>
 
-              <div className="mt-4 text-center">
-                <p className="text-xs text-gray-400">STEP {index + 1}</p>
-                <p className="text-sm font-medium text-gray-900">{step}</p>
-              </div>
-            </div>
+              {!isLast && <div className={connectorClass} />}
+            </Fragment>
           );
         })}
       </div>

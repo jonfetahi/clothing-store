@@ -37,7 +37,7 @@ function NavigationRouter({ routes }) {
                       aria-current={isLast ? 'page' : undefined}
                       className={`flex items-center gap-1.5 text-base transition-colors ${
                         isLast
-                          ? 'font-semibold text-gray-900'
+                          ? 'font-semibold text-primary'
                           : 'font-medium text-gray-400'
                       }`}
                     >

@@ -14,7 +14,6 @@ export function Home() {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  console.log(location.pathname);
 
   const gender = useMemo(() => {
     if (location.pathname.includes('women')) {
@@ -26,8 +25,6 @@ export function Home() {
     }
   }, [location.pathname]);
 
-
-  console.log(gender);
 
   const {
     loading: loadingCategories,
@@ -74,7 +71,7 @@ export function Home() {
           The Collection
         </p>
 
-        <h1 className="text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl">
+        <h1 className="text-3xl font-semibold tracking-tight text-primary md:text-4xl">
           Discover Your Style
         </h1>
 
@@ -110,7 +107,7 @@ export function Home() {
       </div>
 
       <div className="mb-6 flex items-center justify-between border-b border-gray-200 pb-4">
-        <h2 className="text-lg font-semibold text-gray-900">
+        <h2 className="text-lg font-semibold text-primary">
           {selectedCategory
             ? categoryList.find((it) => it.id === selectedCategory)?.name
             : 'All Products'}
@@ -134,7 +131,7 @@ export function Home() {
         </div>
       ) : filteredProducts.length === 0 ? (
         <div className="py-24 text-center">
-          <h3 className="text-lg font-medium text-gray-900">
+          <h3 className="text-lg font-medium text-primary">
             No products found
           </h3>
           <p className="mt-2 text-sm text-gray-500">

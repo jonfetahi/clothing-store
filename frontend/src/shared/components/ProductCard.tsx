@@ -41,11 +41,11 @@ export function ProductCard({ product, onClick }: Props) {
           {product.brand?.name}
         </p>
 
-        <h3 className="line-clamp-2 text-sm font-medium text-gray-900 transition-colors group-hover:text-gray-500">
+        <h3 className="line-clamp-2 text-sm font-medium text-primary transition-colors group-hover:text-gray-500">
           {product.name}
         </h3>
 
-        <p className="pt-1 text-sm font-semibold text-gray-900">
+        <p className="pt-1 text-sm font-semibold text-primary">
           ${Number(product.price).toFixed(2)}
         </p>
       </div>

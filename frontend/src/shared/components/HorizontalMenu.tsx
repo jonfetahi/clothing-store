@@ -26,12 +26,12 @@ type Props = {
 export function HorizontalMenu({ routes }: Props) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
   const [shoppingCart, setShoppingCart] = useState(false);
   const [favouriteModal, setFavouriteModal] = useState(false);
   const [search, setSearch] = useState("");
+  const [dropdown, setDropdown] = useState(false);
   const [data, setData] = useState<Product[]>([]);
-
 
   const { loading, requestAsync } = useServices(Services.Products.search, false, { search });
 
@@ -53,7 +53,7 @@ export function HorizontalMenu({ routes }: Props) {
             />
           </div>
           <div className="flex flex-col min-w-0 flex-1">
-            <div className="font-semibold text-gray-900 truncate  transition-colors">
+            <div className="font-semibold text-primary truncate  transition-colors">
               {it.name}
             </div>
             <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mt-0.5 truncate">
@@ -98,7 +98,7 @@ export function HorizontalMenu({ routes }: Props) {
   return (
     <div className="grid grid-cols-10 bg-white border-b  border-b-gray-600 shadow py-5 px-4 gap-3">
       <div className="col-span-1 ">
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+        <h2 className="text-2xl font-bold tracking-tight text-primary">
           CLOTHING<span className="font-light">STORE.</span>
         </h2>
       </div>
@@ -146,13 +146,24 @@ export function HorizontalMenu({ routes }: Props) {
         <div>
           <AiOutlineUser
             size={27} className="hover:cursor-pointer transition-transform duration-200 hover:scale-125"
-            onClick={() => navigate('/public/login')} />
-          {/*@ts-ignore*/}
-          <div>{user?.first_name}</div>
+            onClick={() => {
+              if (isAuthenticated) {
+                setDropdown(!dropdown)
+              } else {
+                navigate('/public/login');
+              }}} />
+          {isAuthenticated && <div>{user?.first_name}</div>}
+          {dropdown && (
+            <div
+              onClick={() => logout()}
+              className="absolute right-2  bg-white border border-gray-100 rounded-lg shadow-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-red-600 cursor-pointer transition-colors">
+              Logout
+            </div>
+          )}
         </div>
       </div>
       {shoppingCart && (
-       <ShoppingCart onHide={() => setShoppingCart(false)} />
+        <ShoppingCart onHide={() => setShoppingCart(false)} />
       )}
       {favouriteModal && (
         <Favourites onHide={() => setFavouriteModal(false)} />

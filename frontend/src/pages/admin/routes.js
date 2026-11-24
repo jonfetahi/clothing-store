@@ -3,6 +3,7 @@ import { ProductsPage } from './productsPage';
 import { Categories } from './categories';
 import { Brands } from './brands';
 import { Genders } from './genders';
+import { Users } from './users';
 
 export const AdminRoutes = [
   {
@@ -35,5 +36,11 @@ export const AdminRoutes = [
     to: 'genders',
     title: 'Genders',
     component: Genders,
+  },
+  {
+    path: 'users/*',
+    to: 'users',
+    title: 'Users',
+    component: Users,
   },
 ];

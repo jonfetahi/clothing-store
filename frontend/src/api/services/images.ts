@@ -1,11 +1,16 @@
 import { HttpMethodEnum, ServiceDefinition } from "../types";
 import ApiService from '../ApiService';
 
-const baseUrl = (path = '') => ApiService.coreUrl('/image' + path);
+const baseUrl = (path = '') => ApiService.cloudinaryUrl('/image' + path);
 
 export const Images: ServiceDefinition = {
   upload: ({ payload }) => ({
     url: baseUrl('/upload'),
+    method: HttpMethodEnum.POST,
+    payload
+  }),
+  remove: ({ payload }) => ({
+    url: baseUrl('/destroy'),
     method: HttpMethodEnum.POST,
     payload
   }),

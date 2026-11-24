@@ -113,7 +113,7 @@ function NumberEditor({
           className={classNames(
             'flex h-full w-10 items-center justify-center transition-colors',
             canDecrease
-              ? 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200'
+              ? 'text-gray-600 hover:bg-gray-100 hover:text-primary active:bg-gray-200'
               : 'cursor-not-allowed text-gray-300'
           )}
           onClick={() => onAdjust(-1)}
@@ -151,7 +151,7 @@ function NumberEditor({
           className={classNames(
             'flex h-full w-10 items-center justify-center transition-colors',
             canIncrease
-              ? 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200'
+              ? 'text-gray-600 hover:bg-gray-100 hover:text-primary active:bg-gray-200'
               : 'cursor-not-allowed text-gray-300'
           )}
           onClick={() => onAdjust(1)}

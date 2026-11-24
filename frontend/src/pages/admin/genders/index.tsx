@@ -21,7 +21,7 @@ export function Genders() {
         index
         element={
           <RecordList
-            title={'Categories'}
+            title={'Genders'}
             pathUrl={location.pathname}
             listRecordService={Services.Genders.list}
             showDeleteButton
@@ -31,13 +31,13 @@ export function Genders() {
                 <div className="flex flex-col justify-center overflow-hidden">
                   <div className="flex flex-row gap-3 items-center justify-start">
                     <p className='text-lg font-bold'>Name: </p>
-                    <p className="text-gray-900">
+                    <p className="text-primary">
                       {gender?.name}
                     </p>
                   </div>
                   <div className='flex flex-row gap-3 items-center justify-start'>
                     <p className='text-lg font-bold'>ID: </p>
-                    <p className="text-gray-900">
+                    <p className="text-primary">
                       {gender?.id}
                     </p>
                   </div>

@@ -13,7 +13,7 @@ export function Footer() {
 
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
-            <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+            <h2 className="text-2xl font-bold tracking-tight text-primary">
               CLOTHING<span className="font-light">STORE.</span>
             </h2>
 
@@ -42,7 +42,7 @@ export function Footer() {
 
           {/* Shop */}
           <div>
-            <h3 className="mb-5 text-sm font-semibold text-gray-900">
+            <h3 className="mb-5 text-sm font-semibold text-primary">
               Shop
             </h3>
 
@@ -67,7 +67,7 @@ export function Footer() {
 
           {/* Customer Care */}
           <div>
-            <h3 className="mb-5 text-sm font-semibold text-gray-900">
+            <h3 className="mb-5 text-sm font-semibold text-primary">
               Customer Care
             </h3>
 
@@ -81,7 +81,7 @@ export function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h3 className="mb-5 text-sm font-semibold text-gray-900">
+            <h3 className="mb-5 text-sm font-semibold text-primary">
               Stay in the Loop
             </h3>
 
@@ -100,7 +100,7 @@ export function Footer() {
               <button
                 type="button"
                 aria-label="Subscribe"
-                className="ml-3 text-gray-900 transition hover:text-gray-500"
+                className="ml-3 text-primary transition hover:text-gray-500"
               >
                 <FiArrowRight size={20} />
               </button>

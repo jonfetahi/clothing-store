@@ -50,7 +50,7 @@ export function Login() {
       <div
         className='w-full max-w-md rounded-2xl shadow-xl shadow-gray-200/50 p-8 border border-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-200/60'>
         <div className='text-center pb-8'>
-          <h1 className='text-gray-900 font-sans font-bold text-3xl tracking-tight mb-2'>
+          <h1 className='text-primary font-sans font-bold text-3xl tracking-tight mb-2'>
             Login to Admin
           </h1>
           <p className='text-sm text-gray-500'>

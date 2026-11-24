@@ -45,7 +45,7 @@ function PriceInput({
       <input
         type="text"
         inputMode="decimal"
-        className="w-full outline-none border-none bg-transparent text-gray-900 placeholder-gray-400"
+        className="w-full outline-none border-none bg-transparent text-primary placeholder-gray-400"
         value={text}
         onChange={handleChange}
       />

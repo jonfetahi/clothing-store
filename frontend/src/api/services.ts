@@ -8,6 +8,9 @@ import { Genders } from './services/genders';
 import { Images } from './services/images';
 import { Sizes } from './services/sizes';
 import { Colors } from './services/colors';
+import { Users } from './services/users';
+import { Orders } from './services/orders';
+import { Payment } from './services/payment';
 
 export const Services = {
   Categories,
@@ -20,4 +23,7 @@ export const Services = {
   Sizes,
   Colors,
   Auth,
+  Users,
+  Orders,
+  Payment
 }

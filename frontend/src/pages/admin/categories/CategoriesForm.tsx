@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import TextInput from '../../../shared/ui/TextInput';
 import FormField from '../../../shared/ui/FormField';
 

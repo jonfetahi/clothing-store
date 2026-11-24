@@ -33,7 +33,7 @@ function FormField(props: Props) {
       )}
     >
       <label
-        className={classNames('block text-gray-900', labelClassName, {
+        className={classNames('block text-primary', labelClassName, {
           'mt-2 py-1.5': horizontal,
         })}
       >

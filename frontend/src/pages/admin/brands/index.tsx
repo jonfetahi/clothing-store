@@ -31,13 +31,13 @@ export function Brands() {
                 <div className="flex flex-col justify-center overflow-hidden">
                   <div className="flex flex-row gap-3 items-center justify-start">
                     <p className='text-lg font-bold'>Name: </p>
-                    <p className="text-gray-900">
+                    <p className="text-primary">
                       {brand?.name}
                     </p>
                   </div>
                   <div className='flex flex-row gap-3 items-center justify-start'>
                     <p className='text-lg font-bold'>ID: </p>
-                    <p className="text-gray-900">
+                    <p className="text-primary">
                       {brand?.id}
                     </p>
                   </div>

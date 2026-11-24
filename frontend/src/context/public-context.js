@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext } from 'react';
 import { usePreloadedService } from '../hooks/use-preloaded-service';
 import { Services } from '../api/services';
 
@@ -6,6 +6,8 @@ const INITIAL_DATA = {};
 
 const PRELOADED_SERVICES = {
   me: Services.Auth.me,
+  colors: Services.Colors.list,
+  sizes: Services.Sizes.list
 };
 
 const PublicDataContext = createContext(INITIAL_DATA);

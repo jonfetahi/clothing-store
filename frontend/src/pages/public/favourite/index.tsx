@@ -33,8 +33,6 @@ export function Favourites({ onHide }: Props) {
     onReload();
   }
 
-  console.log(data);
-
   return (
     <Modal
       title="My Favourites"
@@ -61,7 +59,7 @@ export function Favourites({ onHide }: Props) {
       <div className="w-full min-w-0">
         <div className="flex items-center justify-between pb-4 border-b border-gray-100">
           <div>
-            <h3 className="text-base font-semibold text-gray-900">
+            <h3 className="text-base font-semibold text-primary">
               Saved for later
             </h3>
             <p className="text-xs text-gray-500 mt-1">
@@ -81,7 +79,7 @@ export function Favourites({ onHide }: Props) {
               <FiHeart className="w-7 h-7 text-gray-400" />
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-primary">
               No favourites yet
             </h3>
 
@@ -125,7 +123,7 @@ export function Favourites({ onHide }: Props) {
                   </p>
                   <h3
                     onClick={() => goToProduct(it.product_id)}
-                    className="text-sm font-semibold text-gray-900 cursor-pointer hover:underline underline-offset-4 line-clamp-2"
+                    className="text-sm font-semibold text-primary cursor-pointer hover:underline underline-offset-4 line-clamp-2"
                   >
                     {it.name}
                   </h3>

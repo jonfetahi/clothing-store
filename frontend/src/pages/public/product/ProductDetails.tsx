@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { FiShoppingBag, FiTruck, FiHeart } from 'react-icons/fi';
+import { FiHeart, FiShoppingBag, FiTruck } from 'react-icons/fi';
 import { Services } from '../../../api/services';
-import { Product } from './types'
+import { Product } from './types';
 import useServices from '../../../hooks/use-service';
 import { useBreadcrumbs } from '../../../context/navigation-context';
 import Button from '../../../shared/ui/Button';
@@ -11,12 +11,20 @@ import FormField from '../../../shared/ui/FormField';
 import { AppLoader } from '../../../shared/components/AppLoader';
 import { useNotify } from '../../../hooks/use-notify';
 import { FaHeart } from 'react-icons/fa';
+import { usePublicData } from '../../../context/public-context';
+import classNames from 'classnames';
+import { RiSecurePaymentFill } from 'react-icons/ri';
+import { BsBoxArrowLeft } from 'react-icons/bs';
 
 
 export function ProductDetails() {
   const { id } = useParams<{ id: string }>();
   useBreadcrumbs('Mens', 1);
+  useBreadcrumbs('Jackets', 2);
+  useBreadcrumbs('Jackets', 3);
   const { showSuccess } = useNotify();
+  // @ts-ignore
+  const { colors, sizes } = usePublicData();
 
   const { loading: loadingProduct, data, request: onReload } = useServices(Services.Products.get, !!id, { id });
   const { loading: loadingFavourites, request: requestAddToFavourites } = useServices(Services.Favourites.add, false);
@@ -29,30 +37,20 @@ export function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
 
   const images = product?.images ?? [];
-  const variants = product?.variants ?? [];
 
-  const colors = useMemo(() => {
-    return product?.variants.reduce<string[]>((acc, curr) => {
-      if (curr.color && !acc.includes(curr.color)) {
-        acc.push(curr.color);
-      }
-      return acc;
-    }, []);
-  }, [product]);
+  const AvailableColors = useMemo(() => {
+    const variantColors = product?.variants.map((it: any) => it.color_id);
+    return colors?.filter((color: any) => variantColors?.includes(color.id));
+  }, [product, colors]);
+
+
+  const AvailableSizes = (size: string) => {
+    return sizes?.find((it: any) => it.id.includes(size))?.name;
+  };
 
   const isFavourite = useMemo(() => {
-    return product?.is_favourite
+    return product?.is_favourite;
   }, [product]);
-
-  const selectedVariant = variants.find(
-    (it) => it.id === selectedVariantId
-  );
-  console.log(selectedVariantId);
-  const selectedColor = selectedVariant?.color ?? null;
-
-  const sizes = selectedColor
-    ? variants.filter((it) => it.color === selectedColor)
-    : variants;
 
 
   const handleFavourites = (product_id: string | undefined) => {
@@ -72,7 +70,7 @@ export function ProductDetails() {
   };
 
   const handleAddToCart = () => {
-   if (!selectedVariantId) return;
+    if (!selectedVariantId) return;
     const payload = {
       product_variant_id: selectedVariantId,
       quantity,
@@ -87,10 +85,10 @@ export function ProductDetails() {
   const loading = loadingProduct || loadingFavourites || loadingDelete || loadingAddToCart;
 
   return (
-    <div className="mx-auto w-full py-1">
+    <div className="mx-auto w-full h-full py-1">
       <div className="grid grid-cols-10">
         {loading && <AppLoader />}
-        <div className="col-start-1 col-end-2">
+        <div className="col-start-1 col-end-2 mx-auto">
           {images.length > 0 && (
             <div className="flex justify-center gap-3 overflow-x-auto">
               {images.map((image) => (
@@ -114,7 +112,7 @@ export function ProductDetails() {
           )}
         </div>
         <div className="col-start-2 col-end-6">
-          <div className="mx-auto aspect-[3/4] max-w-md overflow-hidden rounded-xl bg-gray-100">
+          <div className="mx-auto aspect-square max-w-lg overflow-hidden rounded-xl bg-gray-100">
             {images.length > 0 ? (
               <img
                 src={selectedImage ?? images[0].image_url}
@@ -128,46 +126,42 @@ export function ProductDetails() {
             )}
           </div>
         </div>
-        <div className="col-start-6 col-end-10 ml-5 lg:pt-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-            {product?.brand?.name}
-          </p>
-
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-gray-900">
+        <div className="col-start-6 col-end-10 ml-5">
+          <h1 className="font-sans text-3xl font-bold tracking-tight text-primary">
             {product?.name}
           </h1>
 
-          <div className="flex flex-row justify-start gap-4 items-center text-gray-500 py-5">
+          <div className="flex flex-row justify-start gap-4 items-center text-gray-500 ">
             <div>{product?.brand.name}</div>
             <div className="flex w-1 h-px mt-1 bg-gray-500" />
             <div>{product?.gender.name}</div>
             <div className="flex w-1 h-px mt-1 bg-gray-500" />
             <div>{product?.category.name}</div>
           </div>
-          <p className="mt-2 text-2xl font-semibold text-gray-900">
+          <p className="mt-2 text-2xl font-semibold text-primary">
             ${Number(product?.price).toFixed(2)}
           </p>
           <p className="mt-2 text-sm leading-7 text-gray-500">
             {product?.description}
           </p>
-          <div className="my-8 border-t border-gray-200" />
-          <div className="mb-7">
-            <FormField label={'Colors'} error={false}>
-              {colors?.map((item: string) => (
+          <div className="my-4 border-t border-gray-200" />
+          <div>
+            <FormField label={'Color:'} error={false}>
+              {AvailableColors?.map((item: { name: string, id: string }) => (
                 <div
-                  key={item}
+                  key={item.id}
                   className="w-9 h-9 rounded-full mt-2"
-                style={{
-                  backgroundColor: item,
-                }}
-              />
-            ))}
+                  style={{
+                    backgroundColor: item.name,
+                  }}
+                />
+              ))}
             </FormField>
           </div>
           <div className="mb-2">
             <FormField label={'Select Size'} error={false}>
               <div className="flex flex-wrap gap-3">
-                {sizes.map((variant) => (
+                {product?.variants?.map((variant: any) => (
                   <div
                     key={variant.id}
                     // disabled={variant.initial_quantity <= 0}
@@ -175,13 +169,12 @@ export function ProductDetails() {
                       setSelectedVariantId(variant.id);
                       setQuantity(1);
                     }}
-                    className={`min-w-14 rounded-lg border px-3 py-3 text-base text-center transition ${
-                      selectedVariantId === variant.id
-                        ? 'border-black bg-black text-white'
-                        : 'border-gray-400 hover:border-gray-500'
-                    } disabled:cursor-not-allowed disabled:opacity-30`}
+                    className={classNames('min-w-14 rounded-lg border px-3 py-3 text-base text-center transition border-gray-400 hover:border-gray-500', {
+                      'border-black bg-black text-white': selectedVariantId === variant.id,
+                      'cursor-not-allowed disabled:opacity-30': variant.initial_quantity <= 0,
+                    })}
                   >
-                    {variant.size}
+                    {AvailableSizes(variant.size_id)}
                   </div>
                 ))}
               </div>
@@ -203,13 +196,12 @@ export function ProductDetails() {
             <Button
               type="primary"
               onClick={handleAddToCart}
-              disabled={!selectedVariant}
+              disabled={!selectedVariantId}
               className="flex w-full items-center justify-center gap-3"
             >
               <FiShoppingBag size={22} />
               Add to Cart
             </Button>
-
             <Button
               onClick={() => handleFavourites(product?.id)}
               className="rounded-lg border border-gray-200 px-5 hover:border-gray-400"
@@ -217,11 +209,28 @@ export function ProductDetails() {
               {isFavourite ? <FaHeart size={22} /> : <FiHeart size={22} />}
             </Button>
           </div>
-
-          <div className="mt-7 flex items-center gap-3 text-sm text-gray-500">
-            <FiTruck size={18} />
+        </div>
+      </div>
+      <div
+        className="grid grid-cols-1 md:grid-cols-3 h-[6rem] py-5">
+        <div className="flex items-center justify-center gap-3 py-3 md:py-0 px-4">
+          <FiTruck size={20} className="text-gray-800 shrink-0" />
+          <span className="text-sm text-gray-600">
             Shipping information available at checkout
-          </div>
+          </span>
+        </div>
+        <div className="flex items-center justify-center gap-3 py-3 md:py-0 px-4">
+          <BsBoxArrowLeft size={20} className="text-gray-800 shrink-0" />
+          <span className="text-sm text-gray-600">
+            Easy Returns within 30 days
+          </span>
+        </div>
+
+        <div className="flex items-center justify-center gap-3 py-3 md:py-0 px-4">
+          <RiSecurePaymentFill size={20} className="text-gray-800 shrink-0" />
+          <span className="text-sm text-gray-600">
+            Secure Payment 100% protected
+          </span>
         </div>
       </div>
     </div>

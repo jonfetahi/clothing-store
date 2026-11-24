@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FiEye, FiEyeOff, FiArrowRight } from "react-icons/fi";
@@ -72,10 +71,8 @@ export function Register() {
 
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-5 py-12">
-      <div className="w-full max-w-md">
-
-        {/* Brand */}
+    <div className="min-h-screen flex items-center justify-center px-5 py-12">
+      <div className="w-full max-w-md ">
         <Link
           to="/public"
           className="block text-center text-2xl font-black tracking-tight mb-10"

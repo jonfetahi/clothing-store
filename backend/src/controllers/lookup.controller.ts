@@ -34,22 +34,15 @@ export const createLookupController = (table: string) => {
         },
         create: async (req: Request, res: Response) => {
             try {
-                const name = req.body?.name;
+                const result = await service.create(req.body);
+                return res.status(201).json(result);
 
-                if (typeof name !== "string" || !name.trim()) {
-                    res.status(400).json({ message: "Name is required" });
-                    return;
-                }
+            } catch (error) {
+                console.error(error);
 
-                const item = await service.create(name.trim());
-                res.status(201).json(item);
-            } catch (error: any) {
-                if (error.code === "23505") {
-                    res.status(409).json({ message: "Name already exists" });
-                    return;
-                }
-
-                res.status(500).json({ message: "Internal server error" });
+                return res.status(500).json({
+                    message: "Failed to create record"
+                });
             }
         },
 

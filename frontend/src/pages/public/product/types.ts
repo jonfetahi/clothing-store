@@ -5,8 +5,8 @@ type ProductImage = {
 };
 type ProductVariant = {
   id: string;
-  size: string;
-  color: string;
+  size_id: string;
+  color_id: string;
   initial_quantity: number;
 };
 

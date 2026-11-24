@@ -9,8 +9,6 @@ const USER_FIELDS = `
     u.first_name,
     u.last_name,
     u.email,
-    u.phone,
-    u.address,
     r.name AS role,
     u.created_at
 `;

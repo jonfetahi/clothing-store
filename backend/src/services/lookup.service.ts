@@ -1,6 +1,7 @@
 import pool from "../config/database";
 import { Lookup } from "../types/lookup.types";
 import { CUSTOM_QUERIES } from "../config/queries/custom.queries";
+import { CUSTOM_CREATE } from '../config/custom.create';
 
 export class LookupService {
     constructor(private table: string) {}
@@ -74,11 +75,16 @@ export class LookupService {
     }
 
 
-    async create(name: string): Promise<Lookup> {
+    async create(payload: any): Promise<Lookup> {
+        const customCreate = CUSTOM_CREATE[this.table];
+        if (customCreate) {
+            return customCreate(payload);
+        }
+
         const result = await pool.query<Lookup>(
             `INSERT INTO ${this.table} (name)
        VALUES ($1) RETURNING *`,
-            [name]
+            [payload.name]
         );
 
         return result.rows[0];

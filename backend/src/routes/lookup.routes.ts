@@ -7,16 +7,19 @@ export const createLookupRoutes = (table: string) => {
     const router = Router();
     const controller = createLookupController(table);
 
+    router.get("/", controller.getAll);
+    router.get("/:id", controller.getById);
     if (table === TABLES.PRODUCTS) {
-        router.get("/", authenticate, controller.getAll);
-        router.get("/:id", authenticate, controller.getById);
+        router.post("/", authenticate, controller.create);
+        router.put("/:id", authenticate, controller.update);
+        router.delete("/:id", authenticate, controller.delete);
     } else {
-        router.get("/", controller.getAll);
-        router.get("/:id", controller.getById);
+        router.post("/", controller.create);
+        router.put("/:id", controller.update);
+        router.delete("/:id", controller.delete);
+
     }
-    router.post("/", controller.create);
-    router.put("/:id", controller.update);
-    router.delete("/:id", controller.delete);
+
 
     return router;
 };

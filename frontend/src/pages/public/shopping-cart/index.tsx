@@ -54,6 +54,11 @@ export function ShoppingCart({ onHide }: Props) {
     navigate(`/public/products/${id}`);
   };
 
+  const onGoToCheckout = () => {
+    navigate(`/public/checkout`);
+    onHide();
+  }
+
   return (
     <Modal
       title="Shopping Cart"
@@ -79,7 +84,7 @@ export function ShoppingCart({ onHide }: Props) {
 
           <Button
             type="primary"
-            onClick={() => {}}
+            onClick={() => onGoToCheckout()}
             disabled={cartItems.length === 0}
             className="w-full flex items-center justify-center"
           >
@@ -96,7 +101,7 @@ export function ShoppingCart({ onHide }: Props) {
       <div className="w-full min-w-0">
         <div className="flex items-center justify-between pb-4 border-b border-gray-100">
           <div>
-            <h3 className="text-base font-semibold text-gray-900">
+            <h3 className="text-base font-semibold text-primary">
               Your Bag
             </h3>
             <p className="text-xs text-gray-500 mt-1">
@@ -114,7 +119,7 @@ export function ShoppingCart({ onHide }: Props) {
               <FiShoppingBag className="w-7 h-7 text-gray-400" />
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-primary">
               Your bag is empty
             </h3>
 
@@ -160,7 +165,7 @@ export function ShoppingCart({ onHide }: Props) {
 
                       <h3
                         onClick={() => goToProduct(item.product_id)}
-                        className="text-sm font-semibold text-gray-900 cursor-pointer hover:underline underline-offset-4"
+                        className="text-sm font-semibold text-primary cursor-pointer hover:underline underline-offset-4"
                       >
                         {item.name}
                       </h3>

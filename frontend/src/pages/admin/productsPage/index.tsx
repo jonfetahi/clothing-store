@@ -21,6 +21,8 @@ export function ProductsPage() {
             title={'Products'}
             pathUrl={location.pathname}
             listRecordService={Services.Products.list}
+            showDeleteButton
+            deleteRecordService={Services.Products.delete}
             listRecords={(product) => (
               <div className="flex items-center gap-4 p-4">
                 <img
@@ -30,11 +32,11 @@ export function ProductsPage() {
                 />
                 <div className="flex flex-col justify-center overflow-hidden">
                   <div className="flex flex-row gap-3 items-center justify-start">
-                    <p className="text-gray-900">
+                    <p className="text-primary">
                       {product.brand?.name}
                     </p>
                     <div className='bg-black w-1 h-1 rounded-full mt-1'/>
-                    <h3 className="font-semibold text-gray-900 text-base truncate">
+                    <h3 className="font-semibold text-primary text-base truncate">
                       {product.name}
                     </h3>
                   </div>
@@ -71,7 +73,7 @@ export function ProductsPage() {
         element={
           <RecordCreator
             createTitle={'Add Product'}
-            createRecordService={Services.Products.update}
+            createRecordService={Services.Products.create}
             formDefinition={formDefinition}
             additionalServices={{
               brands: Services.Brands.list,
