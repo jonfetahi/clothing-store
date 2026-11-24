@@ -9,6 +9,7 @@ import userRoutes from './routes/user.routes';
 import cookieParser from 'cookie-parser';
 import orderRoutes from './routes/order.routes';
 import paymentRoutes from './routes/payment.routes';
+import dashboardRoutes from './routes/dashboard.routes';
 
 const app = express();
 
@@ -35,5 +36,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 export default app;

@@ -11,6 +11,7 @@ import { Colors } from './services/colors';
 import { Users } from './services/users';
 import { Orders } from './services/orders';
 import { Payment } from './services/payment';
+import { Dashboard } from './services/dashboard';
 
 export const Services = {
   Categories,
@@ -25,5 +26,6 @@ export const Services = {
   Auth,
   Users,
   Orders,
-  Payment
+  Payment,
+  Dashboard
 }
