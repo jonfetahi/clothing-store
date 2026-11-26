@@ -4,6 +4,7 @@ import { RecordList } from '../../../shared/components/RecordComponents/RecordLi
 import { Route, Routes, useLocation } from 'react-router-dom';
 import categoriesForm from './CategoriesForm';
 import { RecordEditor } from '../../../shared/components/RecordComponents/RecordEditor';
+import { RecordCreator } from '../../../shared/components/RecordComponents/RecordCreator';
 
 type Category = {
   id: string;
@@ -55,6 +56,16 @@ export function Categories() {
             editTitle="Edit Category"
             getRecordService={Services.Categories.get}
             updateRecordService={Services.Categories.update}
+            formDefinition={formDefinition}
+          />
+        }
+      />
+      <Route
+        path={'/create'}
+        element={
+          <RecordCreator
+            createTitle={'Add Category'}
+            createRecordService={Services.Categories.create}
             formDefinition={formDefinition}
           />
         }

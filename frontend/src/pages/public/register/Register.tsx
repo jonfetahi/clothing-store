@@ -10,20 +10,13 @@ import TextInput from '../../../shared/ui/TextInput';
 import FormField from '../../../shared/ui/FormField';
 import { useNotify } from '../../../hooks/use-notify';
 
-type RegisterForm = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-  confirm_password: string;
-};
 
 export function Register() {
   const navigate = useNavigate();
   const location = useLocation();
   const { showSuccess } = useNotify()
 
-  useBreadcrumbs('Register', 1)
+  useBreadcrumbs('Register', 2)
   const [showPassword, setShowPassword] = useState(true);
 
   const { fields, values, errors } = useForm({

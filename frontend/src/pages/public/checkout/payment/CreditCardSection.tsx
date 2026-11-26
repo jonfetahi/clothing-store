@@ -6,7 +6,6 @@ import TextInput from '../../../../shared/ui/TextInput';
 import FormField from '../../../../shared/ui/FormField';
 import useService from '../../../../hooks/use-service';
 import { Services } from '../../../../api/services';
-import { Payment } from '../../../../api/services/payment';
 import { AppLoader } from '../../../../shared/components/AppLoader';
 
 

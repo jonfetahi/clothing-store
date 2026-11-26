@@ -22,7 +22,6 @@ export function ApiProvider({children}) {
 
 function useProvideApi() {
   const { showError } = useNotify()
-  let accessToken = null
 
   const apiClient = useMemo(() => {
     const client = axios.create({

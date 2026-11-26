@@ -18,12 +18,12 @@ export function CategoryForm({ fields, values, errors }: Props) {
           hasError={Boolean(errors.name)}
         />
       </FormField>
-      <FormField label={'Name'} error={false} horizontal className={'col-span-5'}>
+      <FormField label={'Id'} error={false} horizontal className={'col-span-5'}>
         <TextInput
           {...fields.id}
           className="w-full"
           placeholder={'Name'}
-          disabled={values?.id}
+          disabled={false}
           hasError={Boolean(errors.name)}
         />
       </FormField>

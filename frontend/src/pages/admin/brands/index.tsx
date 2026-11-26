@@ -4,6 +4,7 @@ import { RecordList } from '../../../shared/components/RecordComponents/RecordLi
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { RecordEditor } from '../../../shared/components/RecordComponents/RecordEditor';
 import brandsForm from './BrandsForm';
+import { RecordCreator } from '../../../shared/components/RecordComponents/RecordCreator';
 
 type Brand = {
   id: string;
@@ -55,6 +56,16 @@ export function Brands() {
             editTitle="Edit Brand"
             getRecordService={Services.Brands.get}
             updateRecordService={Services.Brands.update}
+            formDefinition={formDefinition}
+          />
+        }
+      />
+      <Route
+        path={'/create'}
+        element={
+          <RecordCreator
+            createTitle={'Add Brand'}
+            createRecordService={Services.Brands.create}
             formDefinition={formDefinition}
           />
         }

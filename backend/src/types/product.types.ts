@@ -1,5 +1,6 @@
 export interface ProductImagePayload {
   image_url: string;
+  public_id: string;
   is_primary: boolean;
   display_order: number;
 }

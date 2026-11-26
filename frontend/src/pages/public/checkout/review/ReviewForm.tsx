@@ -1,3 +1,5 @@
+import { PAYMENT_METHODS } from '../../../../config/constants';
+
 type Props = {
   generalState: any
 }
@@ -6,7 +8,7 @@ export function ReviewForm({ generalState }: Props) {
   const shipping = generalState["Shipping Information"];
   const payment = generalState["Payment"];
 
-  const isCard = payment?.payment_method === "card";
+  const isCard = payment?.payment_method === PAYMENT_METHODS.CARD;
 
   const shippingFields = [
     {
@@ -110,7 +112,7 @@ export function ReviewForm({ generalState }: Props) {
               </span>
             </div>
           </div>
-        ) : payment?.payment_method === "cash_on_delivery" ? (
+        ) : payment?.payment_method === PAYMENT_METHODS.CASH_ON_DELIVERY ? (
           <div className="bg-gray-50 border border-gray-100 rounded-md p-4">
             <p className="text-sm font-semibold text-primary">
               Cash on Delivery

@@ -10,6 +10,7 @@ import {
 import { getAccessToken, setAccessToken } from '../api/access-token';
 import useServices from '../hooks/use-service';
 import { Services } from '../api/services';
+import { ROLES } from '../config/constants';
 
 export type UserRole =
   | "Admin"
@@ -41,13 +42,13 @@ interface AuthContextType {
     password: string
   ) => Promise<AuthUser>;
   logout: () => Promise<void>;
+  isAdmin: boolean | undefined
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const token = getAccessToken();
-  console.log(token);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loadingRestoreSession, setLoadingRestoreSession] = useState(true);
 
@@ -145,6 +146,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return Boolean(token);
   }, [token]);
 
+  const isAdmin = useMemo(() => {
+    if (user) return user.role === ROLES.ADMIN
+  }, [user])
+
   return (
     <AuthContext.Provider
       value={{
@@ -153,7 +158,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated,
         login,
         register,
-        logout
+        logout,
+        isAdmin,
     }}
     >
       {children}

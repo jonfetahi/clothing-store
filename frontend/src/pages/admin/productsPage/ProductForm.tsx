@@ -1,7 +1,7 @@
 import TextInput from '../../../shared/ui/TextInput';
 import FormField from '../../../shared/ui/FormField';
-import { useMemo, useState } from 'react';
-import { AiFillPlusCircle, AiOutlinePlus } from 'react-icons/ai';
+import { useMemo } from 'react';
+import { AiOutlinePlus } from 'react-icons/ai';
 import PriceInput from '../../../shared/ui/PriceInput';
 import SelectInput from '../../../shared/ui/SelectInput';
 import NumberEditor from '../../../shared/ui/NumberEditor';
@@ -10,6 +10,9 @@ import useServices from '../../../hooks/use-service';
 import { Services } from '../../../api/services';
 import { useFileUpload } from '../../../hooks/use-file-upload';
 import { ACCEPTED_IMAGE_CONFIG } from '../../../config/constants';
+import { AppLoader } from '../../../shared/components/AppLoader';
+import classNames from 'classnames';
+import { FiImage, FiStar, FiUploadCloud } from 'react-icons/fi';
 
 type Props = {
   fields: any;
@@ -19,7 +22,6 @@ type Props = {
 }
 
 export function ProductForm({ fields, errors, values, value }: Props) {
-  const [image, setImage] = useState<any>({});
   const { loading, requestAsync } = useServices(Services.Images.upload, false)
 
   const { brandOptions, genderOptions, categoryOptions, sizesOptions, colorsOptions } = useMemo(() => {
@@ -31,29 +33,31 @@ export function ProductForm({ fields, errors, values, value }: Props) {
     return { brandOptions, genderOptions, categoryOptions, sizesOptions, colorsOptions };
   }, [value]);
 
-  const onUploadImage = (file: any) => {
-    // 1. Create a local preview URL immediately
-    const localUrl = URL.createObjectURL(file);
-    // setImage(localUrl);
-
+  const onUploadImage = (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', 'image_clothingstore');
     //@ts-ignore
     requestAsync({}, formData).then((data) => {
-      if (data) {
-        setImage(data?.secure_url ?? localUrl)
+      if (data?.secure_url) {
+        const images = Array.isArray(values.images)
+          ? values.images
+          : [];
+
+        fields.images.onChange([
+          ...images,
+          {
+            image_url: data.secure_url,
+            public_id: data.public_id,
+            display_order: images.length + 1,
+            is_primary: images.length === 0
+          }
+        ]);
       }
-    })
-  }
+    });
+  };
 
   const { onUpload, dropZone, dragging, } = useFileUpload(onUploadImage, ACCEPTED_IMAGE_CONFIG)
-
-
-  const baseImage = useMemo(() => {
-    const primaryImage = values?.images?.find((it: any) => it.is_primary);
-    return primaryImage?.image_url ?? null;
-  }, [values, image]);
 
   const onChangeField = (index: number, key: string, v: any) => {
     const currentVariants = values?.variants || [];
@@ -67,8 +71,8 @@ export function ProductForm({ fields, errors, values, value }: Props) {
 
   const onAddNewVariant = () => {
     const newVariant = {
-      size: '',
-      color: '',
+      size_id: '',
+      color_id: '',
       initial_quantity: 0,
     };
     fields.variants.onChange([...values.variants, newVariant]);
@@ -81,6 +85,7 @@ export function ProductForm({ fields, errors, values, value }: Props) {
 
   return (
     <div className="grid grid-cols-12 gap-2">
+      {loading && <AppLoader />}
       <div className="col-span-6 border rounded-lg p-4">
         <FormField label={'Name'} error={false} className={'col-span-5'} labelClassName="!font-light">
           <TextInput
@@ -140,25 +145,103 @@ export function ProductForm({ fields, errors, values, value }: Props) {
       </div>
 
       <div className="col-span-6 bg-gray-50 rounded-lg p-2">
-        <div className="flex flex-row items-center gap-2">
-          <FormField label={'Product Images'} error={false}>
-            <img
-              //@ts-ignore
-              src={baseImage}
-              alt={'No Image'}
-              className="h-36 w-36 object-cover rounded-lg border transition-transform duration-500 group-hover:scale-105"
-            />
+        <div className="flex flex-row items-center gap-2 ">
+          <FormField label="Product Images" error={false}>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs text-gray-500">
+                Uploaded images
+              </span>
+              <span className="text-xs font-medium text-gray-500">
+                {values.images.length} images
+              </span>
+            </div>
+            <div className="w-2/3 h-full overflow-x-auto pr-1">
+              {values.images.length > 0 ? (
+                <div className="grid grid-cols-2 ">
+                  {values.images.map((it: any) => (
+                    <div
+                      key={it.image_url}
+                      className="group rounded-xl border border-gray-200 overflow-hidden bg-white hover:shadow-sm transition-all duration-200"
+                    >
+                      <div className="relative aspect-square overflow-hidden bg-gray-50">
+                        <img
+                          src={it.image_url}
+                          alt={`Product image ${it.display_order}`}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="flex items-center justify-between px-3 py-2">
+                        {it.is_primary ? (
+                          <span className="flex items-center gap-1 text-xs font-semibold text-primary">
+                            <FiStar size={12} />
+                            Primary
+                          </span>
+                        ) : (
+                          <span className="text-xs text-gray-500">
+                            Image {it.display_order}
+                          </span>
+                        )}
+                        <span className="text-xs text-gray-400">
+                          #{it.display_order}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-40 rounded-xl border border-gray-200 bg-gray-50/50"
+                >
+                  <FiImage size={28} className="text-gray-400 mb-3" />
+                  <span className="text-sm font-medium text-gray-600">
+                    No images uploaded
+                  </span>
+                  <span className="text-xs text-gray-400 mt-1">
+                    Upload images to display them here
+                  </span>
+                </div>
+              )}
+            </div>
 
-          </FormField>
           <div
             {...dropZone}
             onClick={onUpload}
-            className="flex flex-col items-center mb-1 justify-center w-1/2 h-36 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 hover:border-gray-400 cursor-pointer transition-all"
+            className={classNames(
+              'group flex flex-col items-center justify-center gap-3',
+              'w-full h-56 rounded-xl border border-dashed border-2',
+              'cursor-pointer transition-all duration-200',
+              {
+                'border-slate-400 bg-slate-100': dragging,
+                'border-gray-300 bg-gray-50/50 hover:bg-gray-50 hover:border-slate-400': !dragging,
+              },
+            )}
           >
-            <AiFillPlusCircle size={26} />
-            <span className="text-primary mt-1">{dragging ? 'Drop your file here' :'Upload Image'}</span>
-            <span className="text-gray-500 text-xs mt-1">(.PNG, .JPEG)</span>
+            <div className="flex items-center justify-center w-12 h-12 rounded-xl border border-gray-400 bg-white shadow-sm
+            group-hover:scale-105 transition-transform duration-200"
+            >
+              <FiUploadCloud size={23} className="text-slate-600" />
+            </div>
+
+            <div className="text-center">
+              <p className="text-sm text-gray-500">
+                {dragging ? (
+                  <span className="font-medium text-primary">
+                    Drop your image here
+                  </span>
+                ) : (
+                  <>
+                    <span className="font-semibold text-primary">
+                      Click to upload
+                    </span>
+                    {' or drag and drop'}
+                  </>
+                )}
+              </p>
+              <p className="text-xs text-gray-400 mt-1.5">
+                PNG or JPEG
+              </p>
+            </div>
           </div>
+          </FormField>
         </div>
         <div>
           <FormField label={'Variants (Size, Color, Quantity)'} error={false}>
@@ -227,50 +310,3 @@ export default function productForm() {
     Form: ProductForm,
   };
 }
-
-
-/*
-*
-{
-  "name": "Men's Biker Leather Jacket",
-  "description": "Premium black leather biker jacket with a modern slim fit.",
-  "price": 129.99,
-  "category_id": "CATEGORY_UUID",
-  "brand_id": "BRAND_UUID",
-  "gender_id": "GENDER_UUID",
-  "variants": [
-    {
-      "size_id": "SIZE_S_UUID",
-      "color_id": "BLACK_UUID",
-      "initial_quantity": 10
-    },
-    {
-      "size_id": "SIZE_M_UUID",
-      "color_id": "BLACK_UUID",
-      "initial_quantity": 15
-    },
-    {
-      "size_id": "SIZE_XL_UUID",
-      "color_id": "BLACK_UUID",
-      "initial_quantity": 8
-    },
-    {
-      "size_id": "SIZE_XXL_UUID",
-      "color_id": "BLACK_UUID",
-      "initial_quantity": 5
-    }
-  ],
-  "images": [
-    {
-      "image_url": "https://res.cloudinary.com/example/image/upload/jacket-front.jpg",
-      "is_primary": true,
-      "display_order": 1
-    },
-    {
-      "image_url": "https://res.cloudinary.com/example/image/upload/jacket-back.jpg",
-      "is_primary": false,
-      "display_order": 2
-    }
-  ]
-}
-*/

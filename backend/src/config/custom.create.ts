@@ -38,13 +38,15 @@ export const CUSTOM_CREATE: Record<string, CreateHandler> = {
           `INSERT INTO product_images (
                         product_id,
                         image_url,
+                        public_id,
                         is_primary,
                         display_order
                     )
-                    VALUES ($1, $2, $3, $4)`,
+                    VALUES ($1, $2, $3, $4, $5)`,
           [
             product.id,
             image.image_url,
+            image.public_id,
             image.is_primary,
             image.display_order
           ]

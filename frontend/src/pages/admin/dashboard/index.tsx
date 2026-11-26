@@ -18,6 +18,7 @@ import { DashboardRecentOrder, DashboardSummary, DashboardTopProduct } from './t
 import moment from 'moment';
 import { Container } from '../../../shared/ui/Container';
 import { useBreadcrumbs } from '../../../context/navigation-context';
+import { PAYMENT_METHODS, VIEW_TYPE } from '../../../config/constants';
 
 
 const formatCurrency = (value: number) =>
@@ -30,8 +31,8 @@ const statusStyles: Record<string, string> = {
 };
 
 export function Dashboard() {
-  const [period, setPeriod] = useState<"daily" | "monthly">(
-    "monthly"
+  const [period, setPeriod] = useState<string>(
+    VIEW_TYPE.MONTHLY
   );
   useBreadcrumbs('Dashboard', 2)
   const {
@@ -155,13 +156,13 @@ export function Dashboard() {
                 </h2>
 
                 <p className="text-xs text-gray-500 mt-1">
-                  {period === 'daily'
+                  {period === VIEW_TYPE.DAILY
                     ? 'Last 30 days'
                     : 'Last 12 months'}
                 </p>
               </div>
               <div className="flex bg-gray-100 rounded-md p-1">
-                {(['daily', 'monthly'] as const).map((item) => (
+                {([VIEW_TYPE.DAILY, VIEW_TYPE.MONTHLY] as const).map((item) => (
                   <button
                     key={item}
                     onClick={() => setPeriod(item)}
@@ -427,9 +428,9 @@ export function Dashboard() {
                   </td>
 
                   <td className="px-5 py-4 whitespace-nowrap">
-                    {order.payment_method === 'card'
+                    {order.payment_method === PAYMENT_METHODS.CARD
                       ? 'Card'
-                      : order.payment_method === 'cash_on_delivery'
+                      : order.payment_method === PAYMENT_METHODS.CASH_ON_DELIVERY
                         ? 'Cash on Delivery'
                         : '—'}
                   </td>

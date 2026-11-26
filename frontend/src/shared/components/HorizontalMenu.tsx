@@ -159,7 +159,10 @@ export function HorizontalMenu({ routes }: Props) {
           {isAuthenticated && <div>{user?.first_name}</div>}
           {dropdown && (
             <div
-              onClick={() => logout()}
+              onClick={() => {
+                logout();
+                setDropdown(false);
+              }}
               className="absolute right-2  bg-white border border-gray-100 rounded-lg shadow-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-red-600 cursor-pointer transition-colors">
               Logout
             </div>

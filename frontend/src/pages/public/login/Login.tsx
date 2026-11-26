@@ -4,16 +4,15 @@ import { useState } from 'react';
 import { useBreadcrumbs } from '../../../context/navigation-context';
 import Button from '../../../shared/ui/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useServices from '../../../hooks/use-service';
-import { Services } from '../../../api/services';
 import { AppLoader } from '../../../shared/components/AppLoader';
 import useForm from '../../../hooks/use-form';
 import { useNotify } from '../../../hooks/use-notify';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { useAuth } from '../../../context/auth-context';
+import { ROLES } from '../../../config/constants';
 
 export function Login() {
-  useBreadcrumbs('Login', 1)
+  useBreadcrumbs('Login', 2)
   const navigate = useNavigate();
   const location = useLocation();
   const { showSuccess } = useNotify()
@@ -33,7 +32,7 @@ export function Login() {
       if (data) {
         showSuccess("Successfully logged in");
         navigate(
-          data.role === "Simple User"
+          data.role === ROLES.SIMPLE_USER
             ? "/public"
             : "/admin",
           { replace: true }

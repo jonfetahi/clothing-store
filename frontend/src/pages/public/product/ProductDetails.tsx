@@ -4,7 +4,6 @@ import { FiHeart, FiShoppingBag, FiTruck } from 'react-icons/fi';
 import { Services } from '../../../api/services';
 import { Product } from './types';
 import useServices from '../../../hooks/use-service';
-import { useBreadcrumbs } from '../../../context/navigation-context';
 import Button from '../../../shared/ui/Button';
 import NumberEditor from '../../../shared/ui/NumberEditor';
 import FormField from '../../../shared/ui/FormField';
@@ -22,7 +21,7 @@ export function ProductDetails() {
   const { id } = useParams<{ id: string }>();
   const { showSuccess } = useNotify();
   const { isAuthenticated } = useAuth();
-  console.log(isAuthenticated)
+
   // @ts-ignore
   const { colors, sizes } = usePublicData();
 
@@ -88,9 +87,9 @@ export function ProductDetails() {
     <div className="mx-auto w-full h-full py-1">
       <div className="grid grid-cols-10">
         {loading && <AppLoader />}
-        <div className="col-start-1 col-end-2 mx-auto">
+        <div className="col-start-1 col-end-2 ">
           {images.length > 0 && (
-            <div className="flex justify-center gap-3 overflow-x-auto">
+            <div className="flex flex-wrap max-h-full w-full justify-end gap-3 overflow-y-auto">
               {images.map((image) => (
                 <div
                   key={image.id}
@@ -112,7 +111,7 @@ export function ProductDetails() {
           )}
         </div>
         <div className="col-start-2 col-end-6">
-          <div className="mx-auto aspect-square max-w-lg overflow-hidden rounded-xl bg-gray-100">
+          <div className="mx-auto border-2 aspect-square max-w-xl overflow-hidden rounded-xl bg-gray-100">
             {images.length > 0 ? (
               <img
                 src={selectedImage ?? images[0].image_url}

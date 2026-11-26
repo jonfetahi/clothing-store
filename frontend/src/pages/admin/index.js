@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { AdminRoutes } from './routes';
 import { useBreadcrumbs, useNavigation, usePageTitle } from '../../context/navigation-context';
 import { FiChevronRight, FiHome } from 'react-icons/fi';
@@ -7,8 +7,9 @@ import { VerticalMenu } from '../../shared/components/VerticalMenu';
 
 function NavigationRouter({ routes }) {
   const indexRoute = routes.find((it) => it.index) || routes?.[0];
+  const navigate = useNavigate();
   usePageTitle('Admin Panel')
-  useBreadcrumbs('Administration', 1)
+  useBreadcrumbs('Administration', 1, () => { navigate('/admin'); });
   const { breadcrumbs } = useNavigation();
 
   return (
@@ -35,7 +36,8 @@ function NavigationRouter({ routes }) {
 
                     <span
                       aria-current={isLast ? 'page' : undefined}
-                      className={`flex items-center gap-1.5 text-base transition-colors ${
+                      onClick={it.action}
+                      className={`flex items-center gap-1.5 text-base transition-colors hover:cursor-pointer ${
                         isLast
                           ? 'font-semibold text-primary'
                           : 'font-medium text-gray-400'
