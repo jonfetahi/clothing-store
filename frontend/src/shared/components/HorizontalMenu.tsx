@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AiOutlineUser } from 'react-icons/ai';
 import { FiShoppingCart } from 'react-icons/fi';
 import { MdFavoriteBorder } from 'react-icons/md';
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ShoppingCart } from '../../pages/public/shopping-cart';
 import { Favourites } from '../../pages/public/favourite';
 import SelectInput from '../ui/SelectInput';
@@ -11,6 +11,7 @@ import useServices from '../../hooks/use-service';
 import { Services } from '../../api/services';
 import { Product } from '../../pages/public/product/types';
 import { useAuth } from '../../context/auth-context';
+import { AppLoader } from './AppLoader';
 
 type Route = {
   path: string;
@@ -26,14 +27,16 @@ type Props = {
 export function HorizontalMenu({ routes }: Props) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, loading: loadingAuth } = useAuth();
   const [shoppingCart, setShoppingCart] = useState(false);
   const [favouriteModal, setFavouriteModal] = useState(false);
   const [search, setSearch] = useState("");
   const [dropdown, setDropdown] = useState(false);
   const [data, setData] = useState<Product[]>([]);
 
-  const { loading, requestAsync } = useServices(Services.Products.search, false, { search });
+  const { loading: loadingProducts, requestAsync } = useServices(Services.Products.search, false, { search });
+
+  const loading = loadingAuth || loadingProducts
 
   const searchResults = useMemo(() => {
     return data?.map((it: Product) => ({
@@ -97,6 +100,7 @@ export function HorizontalMenu({ routes }: Props) {
   };
   return (
     <div className="grid grid-cols-10 bg-white border-b  border-b-gray-600 shadow py-5 px-4 gap-3">
+      {loading && <AppLoader />}
       <div className="col-span-1 ">
         <h2 className="text-2xl font-bold tracking-tight text-primary">
           CLOTHING<span className="font-light">STORE.</span>

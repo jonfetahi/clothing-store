@@ -4,10 +4,10 @@ import {
   useEffect,
   useState,
   useCallback,
-  ReactNode
-} from "react";
+  ReactNode, useMemo,
+} from 'react';
 
-import { setAccessToken } from "../api/access-token";
+import { getAccessToken, setAccessToken } from '../api/access-token';
 import useServices from '../hooks/use-service';
 import { Services } from '../api/services';
 
@@ -46,7 +46,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-
+  const token = getAccessToken();
+  console.log(token);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loadingRestoreSession, setLoadingRestoreSession] = useState(true);
 
@@ -140,12 +141,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [logoutRequest]);
 
+  const isAuthenticated = useMemo(() => {
+    return Boolean(token);
+  }, [token]);
+
   return (
     <AuthContext.Provider
       value={{
         user,
         loading: loadingLogin || loadingLogout || loadingRestoreSession || loadingRefresh || loadingRegister,
-        isAuthenticated: !!user,
+        isAuthenticated,
         login,
         register,
         logout

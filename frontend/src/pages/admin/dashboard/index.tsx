@@ -61,7 +61,7 @@ export function Dashboard() {
 
   useEffect(() => {
     getEarnings({ period });
-  }, [period, getEarnings]);
+  }, [period]);
 
   //@ts-ignore
   const summary = summaryData as DashboardSummary ?? null;

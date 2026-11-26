@@ -15,14 +15,14 @@ import { usePublicData } from '../../../context/public-context';
 import classNames from 'classnames';
 import { RiSecurePaymentFill } from 'react-icons/ri';
 import { BsBoxArrowLeft } from 'react-icons/bs';
+import { useAuth } from '../../../context/auth-context';
 
 
 export function ProductDetails() {
   const { id } = useParams<{ id: string }>();
-  useBreadcrumbs('Mens', 1);
-  useBreadcrumbs('Jackets', 2);
-  useBreadcrumbs('Jackets', 3);
   const { showSuccess } = useNotify();
+  const { isAuthenticated } = useAuth();
+  console.log(isAuthenticated)
   // @ts-ignore
   const { colors, sizes } = usePublicData();
 
@@ -191,12 +191,12 @@ export function ProductDetails() {
               </div>
             </FormField>
           </div>
-
+          {!isAuthenticated && <span>Login in order to add item to cart</span>}
           <div className="flex gap-3">
             <Button
               type="primary"
               onClick={handleAddToCart}
-              disabled={!selectedVariantId}
+              disabled={!selectedVariantId || !isAuthenticated}
               className="flex w-full items-center justify-center gap-3"
             >
               <FiShoppingBag size={22} />
@@ -204,6 +204,7 @@ export function ProductDetails() {
             </Button>
             <Button
               onClick={() => handleFavourites(product?.id)}
+              disabled={!isAuthenticated}
               className="rounded-lg border border-gray-200 px-5 hover:border-gray-400"
             >
               {isFavourite ? <FaHeart size={22} /> : <FiHeart size={22} />}

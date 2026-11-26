@@ -89,7 +89,7 @@ export function Login() {
           </Button>
         </div>
         <div>
-          <p className="mt-8 text-center text-sm text-gray-500">
+          <span className="mt-8 text-center text-sm text-gray-500">
             Do not have an account?{' '}
             <div
               onClick={onGoToRegister}
@@ -97,7 +97,7 @@ export function Login() {
             >
               Register Here
             </div>
-          </p>
+          </span>
         </div>
 
       </div>
